@@ -1,8 +1,8 @@
 Building configuration...
 
-Current configuration : 4803 bytes
+Current configuration : 5400 bytes
 !
-! Last configuration change at 18:28:27 UTC Mon Feb 22 2021 by developer
+! Last configuration change at 12:05:51 UTC Wed Feb 24 2021 by developer
 !
 version 16.9
 service timestamps debug datetime msec
@@ -20,18 +20,38 @@ boot-end-marker
 vrf definition blue
  description Blue VRF
  rd 1:410
+ !
+ address-family ipv4
+  route-target export 1:410
+  route-target import 1:410
+ exit-address-family
 !
 vrf definition green
  description Green VRF
  rd 1:420
+ !
+ address-family ipv4
+  route-target export 1:420
+  route-target import 1:420
+ exit-address-family
 !
 vrf definition podrick
  description podrick VRF
  rd 1:100
+ !
+ address-family ipv4
+  route-target export 1:100
+  route-target import 1:100
+ exit-address-family
 !
 vrf definition red
  description Red VRF
  rd 1:400
+ !
+ address-family ipv4
+  route-target export 1:400
+  route-target import 1:400
+ exit-address-family
 !
 no logging console
 enable secret 5 $1$20ue$uC.uSGo6nvfWs63EjjzRP.
@@ -151,25 +171,29 @@ redundancy
 ! 
 !
 !
+interface Loopback100
+ description Pod Number 100
+ ip address 10.111.100.1 255.255.255.255
+!
 interface Loopback11100
  description Pod Number 11100
  vrf forwarding red
- no ip address
+ ip address 10.110.11.1 255.255.255.255
 !
 interface Loopback12100
  description Pod Number 12100
  vrf forwarding blue
- no ip address
+ ip address 10.110.12.1 255.255.255.255
 !
 interface Loopback13100
  description Pod Number 13100
  vrf forwarding green
- no ip address
+ ip address 10.110.13.1 255.255.255.255
 !
 interface Loopback14100
  description Pod Number 14100
  vrf forwarding podrick
- no ip address
+ ip address 10.110.14.1 255.255.255.255
 !
 interface GigabitEthernet1
  description MANAGEMENT INTERFACE - DON'T TOUCH ME
